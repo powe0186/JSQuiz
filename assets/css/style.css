@@ -1,0 +1,57 @@
+
+header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 2rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    text-align: center;
+}
+
+#main-box {
+    margin: auto;
+    display: block;
+    background-color: lightskyblue;
+    width: 600px;
+    height: 400px;
+}
+
+p {
+    font-size: 1.5rem;
+    margin: 30px;
+}
+
+ul {
+    margin: auto;
+    display: inline;
+}
+
+li {
+    height: 5rem;
+    background-color: red;
+    font-size: 1.2rem;
+    list-style-type: none;
+    margin: auto;
+    line-height: 5.5rem;
+    margin-bottom: 5px;
+    border: solid 5px black;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#start-button {
+    background-color: rgb(141, 233, 141);
+    height: 40px;
+    width: 90px;
+    margin: auto;
+    display: block;
+}
+
+li:hover {
+    background-color:  rgb(102, 247, 133);
+}
