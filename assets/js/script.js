@@ -3,22 +3,15 @@ const mainBox = document.querySelector("#main-box");
 var timeDisplay = document.querySelector("#time-display")
 var questionText = document.querySelector("#question");
 var shownAnswers = document.querySelector("ul");
-var highScoresBtn = document.querySelector("high-scores-button");
+var highScoreBtn = document.getElementById("high-score-btn");
 var currentQuestion = 0;
 var score = 0;
 var completionTime;
-var highScores;
+var highScore = retrieveHighScore();
+var highScorer = localStorage.highScorer;
 var highScoresScreenOn = false;
 var quizTime;
-init();
-
-
-
-function init() {
-    retrieveHighScores();
-}
-
-
+var highScoreBoxIsOn = false;
 
 function startTimer() {
     var timer = setInterval(() => {
@@ -106,32 +99,28 @@ mainBox.addEventListener("click", (e) => {
 
 function endQuiz() {
     shownAnswers.innerHTML = "";
-    checkHighScores(score);
+    checkHighScore(score);
     startButton.textContent = "Play Again"
     startButton.style.display = "block";
-    highScoreForm();
     
 }
 
-function retrieveHighScores() {
-    if (localStorage.highScores !== undefined) {
-        highScores = JSON.parse(localStorage.highScores);
+function retrieveHighScore() {
+    if (localStorage.highScore !== undefined) {
+        return 0;
     } else {
-        highScores = [];
+        return localStorage.highScore;
     }
 }
 
-function saveHighScores() {
-    highScoresString = JSON.stringify(highScores);
-    localStorage.setItem("highScores", highScoresString);
-}
 
-function checkHighScores(score) {
-    if (highScores.length < 5) {
-
-    } else if (score > findScoreToBeat()) {
-        highScoreForm();
-    }
+function checkHighScore(score) {
+    console.log("This triggered")
+    if (score > highScore || highScore == undefined) {
+        var initials = prompt("You have the new high Score! Please enter your name.")
+        localStorage.setItem("highScorer", initials);
+        localStorage.setItem("highScore", score);
+    } 
 }
 
 function findScoreToBeat() {
@@ -143,16 +132,31 @@ function findScoreToBeat() {
     return scoreToBeat;
 }
 
-function highScoreForm() {
-    question.textContent = "You got a high Score!. Log your initials here:"
-    var highScoreForm = document.createElement('form');
-    var initialsInput = document.createElement('input');
-    initialsInput.setAttribute('type', 'text');
-    initialsInput.setAttribute('name', 'initials');
-    highScoreForm.appendChild(initialsInput);
-    var submitBtn = document.createElement('input');
-    submitBtn.setAttribute('type', 'submit');
-    submitBtn.setAttribute('id', 'submit');
-    highScoreForm.appendChild(submitBtn);
-    mainBox.appendChild(highScoreForm);
+
+function addNewHighScore(e) {
+    e.preventDefault();
+    var initials = initialsInput.value;
+    // Need to figure out how to put the initials and score in the correct place in the high scores array.
 }
+
+highScoreBtn.addEventListener("click", function() {
+    if (highScoreBoxIsOn) {
+        var highScoreBox = document.querySelector('.high-score-box');
+        highScoreBox.remove();
+        mainBox.style.display = "block";
+        highScoreBoxIsOn = false;
+    } else {
+        mainBox.style.display = "none";
+        var highScoreBox = document.createElement('div');
+        highScoreBox.setAttribute("class", "high-score-box");
+        var highScoreTitle = document.createElement('h3');
+        highScoreTitle.textContent = "The Highest score so far: ";
+        var highScoreInfo = document.createElement('p');
+        highScoreInfo.textContent = highScorer + " ............  " + highScore + " pts";
+        highScoreBox.appendChild(highScoreTitle);
+        highScoreBox.appendChild(highScoreInfo);
+        document.body.appendChild(highScoreBox);
+        highScoreBoxIsOn = true;
+    }
+    
+})

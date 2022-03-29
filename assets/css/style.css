@@ -71,7 +71,7 @@ button:hover {
     text-align: center;
 }
 
-#high-scores-btn {
+#high-score-btn {
     background-color: blue;
     height: 50px;
 }
@@ -81,4 +81,11 @@ form {
     margin-top: 20px;
     display: block;
     margin-left: 30%;
+}
+
+.high-score-box {
+    background-color: greenyellow;
+    width: 60%;
+    height: 60%;
+    margin: auto;
 }
