@@ -75,3 +75,10 @@ button:hover {
     background-color: blue;
     height: 50px;
 }
+
+form {
+    justify-content: center;
+    margin-top: 20px;
+    display: block;
+    margin-left: 30%;
+}

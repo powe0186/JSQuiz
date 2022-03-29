@@ -9,10 +9,15 @@ var score = 0;
 var completionTime;
 var highScores;
 var highScoresScreenOn = false;
+var quizTime;
+init();
 
 
 
-var quizTime = 3;
+function init() {
+    retrieveHighScores();
+}
+
 
 
 function startTimer() {
@@ -22,7 +27,6 @@ function startTimer() {
             if (quizTime <= 0) {
                 timeDisplay.textContent = "TIME's UP!";
                 endQuiz();
-                quizTime = 0;
                 clearInterval(timer);
                 
             }
@@ -56,16 +60,23 @@ function loadQuestion(index) {
 
 
 function startQuiz() {
+    //initialize quiz score, questions, time.
     score = 0;
     currentQuestion = 0;
-    quizTime = 10;
+    quizTime = 90;
     startTimer();
     startButton.style.display = "none";
     loadQuestion(currentQuestion);
-    var scoreDisplay = document.createElement('h4');
-    scoreDisplay.textContent = "Score: " + score;
-    scoreDisplay.setAttribute('id', 'score-display');
-    mainBox.appendChild(scoreDisplay);
+    // if there is not a score box, make one and put it on the screen. Otherwise, update the existing one.
+    if (document.getElementById('score-display') === null) {
+        var scoreDisplay = document.createElement('h4');
+        scoreDisplay.textContent = "Score: " + score;
+        scoreDisplay.setAttribute('id', 'score-display');
+        mainBox.appendChild(scoreDisplay);
+    } else {
+        document.getElementById('score-display').textContent = "Score: " + score;
+    }
+   
 }
 
 
@@ -75,12 +86,15 @@ mainBox.addEventListener("click", (e) => {
     } else if (e.target.getAttribute('class') === 'answer') {
         var givenAnswer = e.target.getAttribute('data-option');
         if (givenAnswer === questionList[currentQuestion].answer) {
+            //update score for correct answer.
             score +=10;
             var scoreDisplay = document.getElementById('score-display');
             scoreDisplay.textContent = "Score: " + score;
         } else {
+            // lose time for incorrect answer
             quizTime -=30;
         }
+        //If that is the last question, end the quiz. Otherwise, load the next question.
         currentQuestion++;
         if (currentQuestion >= questionList.length) {
             endQuiz();
@@ -91,10 +105,54 @@ mainBox.addEventListener("click", (e) => {
 });
 
 function endQuiz() {
-    console.log("Quiz is over!");
-    shownAnswers.textContent = "";
+    shownAnswers.innerHTML = "";
+    checkHighScores(score);
     startButton.textContent = "Play Again"
     startButton.style.display = "block";
-    completionTime = quizTime;
-    console.log(completionTime);
+    highScoreForm();
+    
+}
+
+function retrieveHighScores() {
+    if (localStorage.highScores !== undefined) {
+        highScores = JSON.parse(localStorage.highScores);
+    } else {
+        highScores = [];
+    }
+}
+
+function saveHighScores() {
+    highScoresString = JSON.stringify(highScores);
+    localStorage.setItem("highScores", highScoresString);
+}
+
+function checkHighScores(score) {
+    if (highScores.length < 5) {
+
+    } else if (score > findScoreToBeat()) {
+        highScoreForm();
+    }
+}
+
+function findScoreToBeat() {
+    var scoresArray = [];
+    for (let i = 0; i < highScores.length; i++) {
+        scoresArray.push(highScores[i].score);
+    }
+    var scoreToBeat = Math.min(...scoresArray);
+    return scoreToBeat;
+}
+
+function highScoreForm() {
+    question.textContent = "You got a high Score!. Log your initials here:"
+    var highScoreForm = document.createElement('form');
+    var initialsInput = document.createElement('input');
+    initialsInput.setAttribute('type', 'text');
+    initialsInput.setAttribute('name', 'initials');
+    highScoreForm.appendChild(initialsInput);
+    var submitBtn = document.createElement('input');
+    submitBtn.setAttribute('type', 'submit');
+    submitBtn.setAttribute('id', 'submit');
+    highScoreForm.appendChild(submitBtn);
+    mainBox.appendChild(highScoreForm);
 }
