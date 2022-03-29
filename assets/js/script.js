@@ -145,6 +145,7 @@ highScoreBtn.addEventListener("click", function() {
         highScoreBox.remove();
         mainBox.style.display = "block";
         highScoreBoxIsOn = false;
+        highScoreBtn.innerHTML ="High Score";
     } else {
         mainBox.style.display = "none";
         var highScoreBox = document.createElement('div');
@@ -157,6 +158,7 @@ highScoreBtn.addEventListener("click", function() {
         highScoreBox.appendChild(highScoreInfo);
         document.body.appendChild(highScoreBox);
         highScoreBoxIsOn = true;
+        highScoreBtn.innerHTML = "Go Back";
     }
     
 })
