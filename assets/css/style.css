@@ -55,3 +55,23 @@ li {
 li:hover {
     background-color:  rgb(102, 247, 133);
 }
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#score-display {
+    display: block;
+    width: 200px;
+    height: 50px;
+    background-color:rgb(67, 2, 246);
+    font-size: 30px;
+    color: white;
+    margin: auto;
+    text-align: center;
+}
+
+#high-scores-btn {
+    background-color: blue;
+    height: 50px;
+}
