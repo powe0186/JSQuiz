@@ -19,8 +19,8 @@ function startTimer() {
         quizTime--;
             if (quizTime <= 0) {
                 timeDisplay.textContent = "TIME's UP!";
-                endQuiz();
                 clearInterval(timer);
+                endQuiz();
                 
             }
 
@@ -48,6 +48,13 @@ function loadQuestion(index) {
     loadAnswer(newQuestion, 'd');
 }
 
+function retrieveHighScorer() {
+    if (localStorage.highScore == undefined) {
+        return "";
+    } else {
+        return localStorage.highScorer;
+    }
+}
 
 
 
@@ -99,6 +106,7 @@ mainBox.addEventListener("click", (e) => {
 
 function endQuiz() {
     shownAnswers.innerHTML = "";
+    retrieveHighScore();
     checkHighScore(score);
     startButton.textContent = "Play Again"
     startButton.style.display = "block";
@@ -106,7 +114,7 @@ function endQuiz() {
 }
 
 function retrieveHighScore() {
-    if (localStorage.highScore !== undefined) {
+    if (localStorage.highScore == undefined) {
         return 0;
     } else {
         return localStorage.highScore;
@@ -147,6 +155,8 @@ highScoreBtn.addEventListener("click", function() {
         highScoreBoxIsOn = false;
         highScoreBtn.innerHTML ="High Score";
     } else {
+        highScore = retrieveHighScore();
+        highScorer = retrieveHighScorer()
         mainBox.style.display = "none";
         var highScoreBox = document.createElement('div');
         highScoreBox.setAttribute("class", "high-score-box");
